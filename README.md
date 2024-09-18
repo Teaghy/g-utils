@@ -7,17 +7,17 @@
 ### yarn 安装方式
 
 ```bash
-yarn add @teaghy/g-tools
+yarn add @teaghy/g-utils
 ```
 
 ### npm 安装方式
 
 ```bash
-npm install @teaghy/g-tools
+npm install @teaghy/g-utils
 ```
 
 ### 使用方式
 
 ```javascript
-import { arrayToTree } from '@teaghy/g-tools'
+import { arrayToTree } from '@teaghy/g-utils'
 ```
