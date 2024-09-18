@@ -19,5 +19,5 @@ npm install @teaghy/g-utils
 ### 使用方式
 
 ```javascript
-import { arrayToTree } from '@teaghy/g-utils'
+import { arrayToTree, treeToList } from '@teaghy/g-utils'
 ```
