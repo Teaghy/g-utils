@@ -1,4 +1,4 @@
-import type { TreeNodeType, ReplaceFiledOptionsType } from './types';
+import type { TreeNodeType, ReplaceFiledOptionsType, parentIdTypes } from './types';
 /**
  * @description 平行数据结构转树形结构
  * @param {Array} list 需要转换的树结构
@@ -29,7 +29,6 @@ export function arrayToTree(list: TreeNodeType, { id = 'id', pid = 'pid', childr
  * @param {*} option 对象键配置，默认值{ children: 'children' }
  * @returns 平铺的列表
  */
-type parentIdTypes = String | null;
 
 export function treeToList(tree: TreeNodeType[], parentId: parentIdTypes = null, { children = 'children', pid = 'pid', id = 'id' } = { }): TreeNodeType[] {
   return tree.reduce((arr: TreeNodeType[], curr : TreeNodeType) =>{
