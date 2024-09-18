@@ -21,3 +21,22 @@ export function arrayToTree(list: TreeNodeType, { id = 'id', pid = 'pid', childr
   });
   return result;
 }
+
+/**
+ * 树形转平铺list（广度优先，先横向再纵向）
+ * @param {*} tree 树j结构数据
+ * @param {string, null} parentId 树j结构数据
+ * @param {*} option 对象键配置，默认值{ children: 'children' }
+ * @returns 平铺的列表
+ */
+type parentIdTypes = String | null;
+
+export function treeToList(tree: TreeNodeType[], parentId: parentIdTypes = null, { children = 'children', pid = 'pid', id = 'id' } = { }): TreeNodeType[] {
+  return tree.reduce((arr: TreeNodeType[], curr : TreeNodeType) =>{
+    const { [children]: childItem, ...params } = curr;
+    if (childItem?.length) {
+      return arr.concat([params], treeToList(childItem, curr[id]))
+    }
+    return arr.concat([{...params, ...(parentId ? { [pid]: parentId } : {}) }])
+  }, [])
+}
