@@ -1,26 +1,26 @@
-import type { parentIdTypes, ReplaceFiledOptionsType, TreeNodeType } from './types'
+import type { parentIdTypes, ReplaceFiledOptionsType, TreeNodeType } from './types';
 /**
  * @description 平行数据结构转树形结构
  * @param {Array} list 需要转换的树结构
  * @returns {Array} 返回树形结构数据
  */
 export function arrayToTree(list: TreeNodeType, { id = 'id', pid = 'pid', children = 'children' }: ReplaceFiledOptionsType = {}): any {
-  const itemMap = new Map()
+  const itemMap = new Map();
   list.forEach((element: TreeNodeType) => {
-    itemMap.set(element[id], { ...element })
-  })
-  const result: TreeNodeType[] = []
+    itemMap.set(element[id], { ...element });
+  });
+  const result: TreeNodeType[] = [];
   list.forEach((element: TreeNodeType) => {
     if (itemMap.has(element[pid])) {
-      const childrenNodes = itemMap.get(element[pid])[children] || []
-      itemMap.get(element[pid])[children] = childrenNodes
-      itemMap.get(element[pid])[children].push(itemMap.get(element[id]))
+      const childrenNodes = itemMap.get(element[pid])[children] || [];
+      itemMap.get(element[pid])[children] = childrenNodes;
+      itemMap.get(element[pid])[children].push(itemMap.get(element[id]));
     }
     else {
-      result.push(itemMap.get(element[id]))
+      result.push(itemMap.get(element[id]));
     }
-  })
-  return result
+  });
+  return result;
 }
 
 /**
@@ -33,10 +33,10 @@ export function arrayToTree(list: TreeNodeType, { id = 'id', pid = 'pid', childr
 
 export function treeToList(tree: TreeNodeType[], parentId: parentIdTypes = null, { children = 'children', pid = 'pid', id = 'id' } = { }): TreeNodeType[] {
   return tree.reduce((arr: TreeNodeType[], curr: TreeNodeType) => {
-    const { [children]: childItem, ...params } = curr
+    const { [children]: childItem, ...params } = curr;
     if (childItem?.length) {
-      return arr.concat([params], treeToList(childItem, curr[id]))
+      return arr.concat([params], treeToList(childItem, curr[id]));
     }
-    return arr.concat([{ ...params, ...(parentId ? { [pid]: parentId } : {}) }])
-  }, [])
+    return arr.concat([{ ...params, ...(parentId ? { [pid]: parentId } : {}) }]);
+  }, []);
 }

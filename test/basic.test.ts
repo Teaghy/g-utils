@@ -1,5 +1,5 @@
-import { expect } from 'vitest'
-import { arrayToTree, treeToList } from '../src/index'
+import { expect } from 'vitest';
+import { arrayToTree, treeToList } from '../src/index';
 
 it('list to tree', () => {
   const arr = [
@@ -22,7 +22,7 @@ it('list to tree', () => {
       id: 1,
       name: '0-1',
     },
-  ]
+  ];
   expect(arrayToTree(arr)).toEqual([
     {
       id: 0,
@@ -48,8 +48,8 @@ it('list to tree', () => {
 
       ],
     },
-  ])
-})
+  ]);
+});
 
 const testData = {
   id: 1,
@@ -296,10 +296,10 @@ const testData = {
       ],
     },
   ],
-}
+};
 it('tree to list', () => {
-  const treeData = treeToList([testData])
-  const arr2 = arrayToTree(treeData)
-  const treeData2 = treeToList(arr2)
-  expect(treeData).toEqual(treeData2)
-})
+  const treeData = treeToList([testData]);
+  const arr2 = arrayToTree(treeData);
+  const treeData2 = treeToList(arr2);
+  expect(treeData).toEqual(treeData2);
+});

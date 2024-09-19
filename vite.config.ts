@@ -1,12 +1,8 @@
-import path from 'node:path'
+import path from 'node:path';
 /// <reference types="vitest/config" />
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vite';
 
 export default defineConfig({
-  test: {
-    /* for example, use global to avoid globals imports (describe, test, expect): */
-    // globals: true,
-  },
   build: {
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
@@ -14,4 +10,4 @@ export default defineConfig({
       fileName: format => `g-utils.${format}.js`,
     },
   },
-})
+});
