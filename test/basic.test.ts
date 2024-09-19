@@ -1,4 +1,4 @@
-import { expect } from 'vitest';
+import { expect, it } from 'vitest';
 import { arrayToTree, treeToList } from '../src/index';
 
 it('list to tree', () => {
