@@ -24,10 +24,13 @@ export function arrayToTree(list: TreeNodeType, { id = 'id', pid = 'pid', childr
 }
 
 /**
- * 树形转平铺list（广度优先，先横向再纵向）
- * @param {*} tree 树j结构数据
- * @param {string, null} parentId 树j结构数据
- * @param {*} option 对象键配置，默认值{ children: 'children' }
+ * @description 树形转平铺list（广度优先，先横向再纵向）
+ * @param {Array} tree 树j结构数据
+ * @param {string|null} parentId 树结构数据
+ * @param {object} options 对象键配置，默认值{ children = 'children', pid = 'pid', id = 'id' }
+ * @param {string} options.children children的key
+ * @param {string} options.pid pid的key
+ * @param {string} options.id id的key
  * @returns 平铺的列表
  */
 
