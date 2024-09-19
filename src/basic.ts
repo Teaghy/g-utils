@@ -2,6 +2,10 @@ import type { parentIdTypes, ReplaceFiledOptionsType, TreeNodeType } from './typ
 /**
  * @description 平行数据结构转树形结构
  * @param {Array} list 需要转换的树结构
+ * @param {object} options 对象键配置，默认值{ children = 'children', pid = 'pid', id = 'id' }
+ * @param {string} options.children children的key
+ * @param {string} options.pid pid的key
+ * @param {string} options.id id的key
  * @returns {Array} 返回树形结构数据
  */
 export function arrayToTree(list: TreeNodeType, { id = 'id', pid = 'pid', children = 'children' }: ReplaceFiledOptionsType = {}): any {
