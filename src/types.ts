@@ -1,6 +1,6 @@
 type TreeNodeKeyType = string | number
 
-export type parentIdTypes = String | null;
+export type parentIdTypes = string | null
 
 export interface TreeNodeType {
   [key: string]: any | TreeNodeKeyType

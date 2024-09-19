@@ -1,39 +1,43 @@
 {
   "name": "@teaghy/g-utils",
-  "private": false,
-  "version": "0.0.3",
   "type": "module",
-  "files": [
-    "dist"
-  ],
-  "main": "./dist/g-utils.umd.js",
-  "module": "./dist/g-utils.es.js",
+  "version": "0.0.3",
+  "private": false,
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Teaghy/g-utils.git"
+  },
   "exports": {
     ".": {
       "import": "./dist/g-utils.es.js",
       "require": "./dist/g-utils.umd.js"
     }
   },
+  "main": "./dist/g-utils.umd.js",
+  "module": "./dist/g-utils.es.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "test": "vitest",
     "preview": "vite preview",
-    "publish": "npm run build && npm publish"
+    "publish": "npm run build && npm publish",
+    "lint:fix": "eslint . --fix"
   },
   "devDependencies": {
+    "@antfu/eslint-config": "^3.6.2",
     "@types/node": "^22.5.4",
+    "eslint": "^9.10.0",
+    "eslint-plugin-format": "^0.1.2",
     "typescript": "^5.5.3",
     "vite": "^5.4.1",
     "vitest": "^2.0.5"
   },
-  "license": "MIT",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
     "access": "public"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Teaghy/g-utils.git"
   }
 }

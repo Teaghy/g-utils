@@ -1,13 +1,12 @@
-import { assert, expect, test } from 'vitest'
-import { arrayToTree, treeToList } from '../src/index';
+import { expect } from 'vitest'
+import { arrayToTree, treeToList } from '../src/index'
 
-
-test('list to tree', () => {
+it('list to tree', () => {
   const arr = [
     {
       pid: 1,
       id: 2,
-      name: '0-1-1'
+      name: '0-1-1',
     },
     {
       id: 0,
@@ -16,12 +15,12 @@ test('list to tree', () => {
     {
       pid: 0,
       id: 3,
-      name: '0-2'
+      name: '0-2',
     },
     {
       pid: 0,
       id: 1,
-      name: '0-1'
+      name: '0-1',
     },
   ]
   expect(arrayToTree(arr)).toEqual([
@@ -32,7 +31,7 @@ test('list to tree', () => {
         {
           pid: 0,
           id: 3,
-          name: '0-2'
+          name: '0-2',
         },
         {
           pid: 0,
@@ -42,12 +41,12 @@ test('list to tree', () => {
             {
               pid: 1,
               id: 2,
-              name: '0-1-1'
+              name: '0-1-1',
             },
-          ]
+          ],
         },
-       
-      ]
+
+      ],
     },
   ])
 })
@@ -297,10 +296,10 @@ const testData = {
       ],
     },
   ],
-};
-test('tree to list', () => {
+}
+it('tree to list', () => {
   const treeData = treeToList([testData])
-  const arr2 = arrayToTree(treeData);
-  const treeData2 = treeToList(arr2);
+  const arr2 = arrayToTree(treeData)
+  const treeData2 = treeToList(arr2)
   expect(treeData).toEqual(treeData2)
 })
