@@ -11,3 +11,9 @@ export interface ReplaceFiledOptionsType {
   pid?: string;
   children?: string;
 }
+
+export interface RenderHooksFnType {
+  (arg?: any): any;
+  _once?: boolean;
+  _hookType?: string;
+}
