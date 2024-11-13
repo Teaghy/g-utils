@@ -27,8 +27,12 @@
     "publish": "npm run build && npm publish",
     "lint:fix": "eslint . --fix"
   },
+  "dependencies": {
+    "lodash-es": "^4.17.21"
+  },
   "devDependencies": {
     "@antfu/eslint-config": "^3.6.2",
+    "@types/lodash-es": "^4.17.12",
     "@types/node": "^22.5.4",
     "eslint": "^9.10.0",
     "eslint-plugin-format": "^0.1.2",

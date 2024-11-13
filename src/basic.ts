@@ -1,4 +1,5 @@
-import type { CompareResultType, parentIdTypes, ReplaceFiledOptionsType, TreeNodeType } from './types';
+import type { CompareDiffOptionType, CompareResultType, parentIdTypes, ReplaceFiledOptionsType, TreeNodeType } from './types';
+import { isEqual } from 'lodash-es';
 /**
  * @description 平行数据结构转树形结构
  * @param {Array} list 需要转换的树结构
@@ -48,7 +49,8 @@ export function treeToList(tree: TreeNodeType[], parentId: parentIdTypes = null,
   }, []);
 }
 
-function patch(newArr: TreeNodeType[], oldArr: TreeNodeType[], option = { indexEffect: true }): any {
+function patch(newArr: TreeNodeType[], oldArr: TreeNodeType[], option: CompareDiffOptionType = {}): any {
+  const { indexEffect = true, compareMethod } = option;
   const updates: Array<CompareResultType> = [];
   const adds: Array<CompareResultType> = [];
   const moves: Array<CompareResultType> = [];
@@ -56,7 +58,7 @@ function patch(newArr: TreeNodeType[], oldArr: TreeNodeType[], option = { indexE
   const oldIdMap = new Map();
   const getPath = (path: string, id: string | number, index: number): string => {
     const separator = path === 'root' ? '-' : '|';
-    return option.indexEffect ? `${path}${separator}${index}-${id}` : `${path}${separator}${id}`;
+    return indexEffect ? `${path}${separator}${index}-${id}` : `${path}${separator}${id}`;
   };
   function getOldData(data: TreeNodeType, path: string, index: number): void {
     const newPath = getPath(path, data.id, index);
@@ -70,8 +72,20 @@ function patch(newArr: TreeNodeType[], oldArr: TreeNodeType[], option = { indexE
   }
   oldArr.forEach((rootNode: TreeNodeType, index: number) => getOldData(rootNode, 'root', index));
 
-  // 递归遍历新数据
-
+  // 比较两个数据是否相同的方法
+  function compareNode(newNode: TreeNodeType, oldNode: TreeNodeType): boolean {
+    if (compareMethod && typeof compareMethod === 'function') {
+      try {
+        return compareMethod(newNode, oldNode);
+      }
+      catch (error) {
+        console.error(error);
+      }
+    }
+    const { children, ...newNodeExt } = newNode;
+    const { children: oldChildren, ...oldNodeExt } = oldNode;
+    return isEqual(newNodeExt, oldNodeExt);
+  }
   function recursionData(data: TreeNodeType, path: string, index: number): any {
     const currentKey = getPath(path, data.id, index);
     const existingNode = oldDataPathMap.get(currentKey);
@@ -79,7 +93,7 @@ function patch(newArr: TreeNodeType[], oldArr: TreeNodeType[], option = { indexE
     const diffInfo = { id: data.id, _old: existingNode, _new: data };
     if (existingNode) {
       // 存在就去比较里面的值
-      if (data.value !== existingNode.value) {
+      if (!compareNode(data, existingNode)) {
         // 这是修改的
         updates.push(diffInfo);
       }
@@ -87,7 +101,7 @@ function patch(newArr: TreeNodeType[], oldArr: TreeNodeType[], option = { indexE
     else if (existingIdNode) {
       // 如果旧的不存在, 则去找id相同的
       moves.push(diffInfo);
-      if (data.value !== existingIdNode.value) {
+      if (!compareNode(data, existingIdNode)) {
         updates.push(diffInfo);
       }
     }
@@ -109,9 +123,9 @@ function patch(newArr: TreeNodeType[], oldArr: TreeNodeType[], option = { indexE
   };
 }
 
-export function getDiffTree(newData: TreeNodeType[], oldData: TreeNodeType[]): any {
-  const pathInfo = patch(newData, oldData);
-  const { adds } = patch(oldData, newData);
+export function getDiffTree(newData: TreeNodeType[], oldData: TreeNodeType[], option: CompareDiffOptionType = {}): any {
+  const pathInfo = patch(newData, oldData, option);
+  const { adds } = patch(oldData, newData, option);
   const deletes = adds.map((item: CompareResultType) => ({
     id: item.id,
     _old: item._new,

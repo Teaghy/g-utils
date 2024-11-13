@@ -309,7 +309,6 @@ it('diff tree', () => {
     id: '1',
     value: 'a',
     children: [
-      { id: '2', value: 'b', children: [] },
       {
         id: '3',
         value: 'c',
@@ -326,10 +325,10 @@ it('diff tree', () => {
     id: '1',
     value: 'a',
     children: [
-      { id: '7', value: 'g', children: [] },
       {
         id: '3',
-        value: 'cc',
+        value: 'c',
+        xuexi: 'asdasd',
         children: [
           { id: '5', value: 'e', children: [] },
           { id: '4', value: 'd', children: [] },
@@ -338,8 +337,13 @@ it('diff tree', () => {
       { id: '6', value: 'f', children: [] },
     ],
   }];
-  const result = getDiffTree(newTree, oldTree);
-  const { deletes } = result;
-  const deletesId = deletes.map(item => item.id).join(',');
-  expect(deletesId).toBe('2');
+  const result = getDiffTree(newTree, oldTree, { indexEffect: false });
+
+  const { updates } = result;
+  const updatesId1 = updates.map(item => item.id).join(',');
+  expect(updatesId1).toBe('3');
+
+  const result2 = getDiffTree(newTree, oldTree, { indexEffect: false, compareMethod: (newNode, oldNode) => newNode.value === oldNode.value });
+  const updatesId = result2.updates.map(item => item.id).join(',');
+  expect(updatesId).toBe('');
 });

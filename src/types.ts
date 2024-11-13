@@ -18,6 +18,11 @@ export interface RenderHooksFnType {
   _hookType?: string;
 }
 
+export interface CompareDiffOptionType {
+  indexEffect?: boolean; // 是否检测索引变化
+  compareMethod?: (...arg: any) => boolean; // 比较的方法
+}
+
 export interface CompareResultType {
   id: number;
   _new: any;
