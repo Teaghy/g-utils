@@ -1,5 +1,5 @@
 import { expect, it } from 'vitest';
-import { arrayToTree, treeToList } from '../src/index';
+import { arrayToTree, getDiffTree, treeToList } from '../src/index';
 
 it('list to tree', () => {
   const arr = [
@@ -302,4 +302,44 @@ it('tree to list', () => {
   const arr2 = arrayToTree(treeData);
   const treeData2 = treeToList(arr2);
   expect(treeData).toEqual(treeData2);
+});
+
+it('diff tree', () => {
+  const oldTree = [{
+    id: '1',
+    value: 'a',
+    children: [
+      { id: '2', value: 'b', children: [] },
+      {
+        id: '3',
+        value: 'c',
+        children: [
+          { id: '4', value: 'd', children: [] },
+          { id: '5', value: 'e', children: [] },
+          { id: '6', value: 'f', children: [] },
+        ],
+      },
+    ],
+  }];
+
+  const newTree = [{
+    id: '1',
+    value: 'a',
+    children: [
+      { id: '7', value: 'g', children: [] },
+      {
+        id: '3',
+        value: 'cc',
+        children: [
+          { id: '5', value: 'e', children: [] },
+          { id: '4', value: 'd', children: [] },
+        ],
+      },
+      { id: '6', value: 'f', children: [] },
+    ],
+  }];
+  const result = getDiffTree(newTree, oldTree);
+  const { deletes } = result;
+  const deletesId = deletes.map(item => item.id).join(',');
+  expect(deletesId).toBe('2');
 });

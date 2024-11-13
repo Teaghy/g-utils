@@ -17,3 +17,9 @@ export interface RenderHooksFnType {
   _once?: boolean;
   _hookType?: string;
 }
+
+export interface CompareResultType {
+  id: number;
+  _new: any;
+  _old: any;
+}
