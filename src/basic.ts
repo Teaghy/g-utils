@@ -1,5 +1,5 @@
 import type { CompareDiffOptionType, CompareResultType, parentIdTypes, ReplaceFiledOptionsType, TreeNodeType } from './types';
-import { isEqual } from 'lodash-es';
+import { get, isEqual } from 'lodash-es';
 /**
  * @description 平行数据结构转树形结构
  * @param {Array} list 需要转换的树结构
@@ -50,20 +50,21 @@ export function treeToList(tree: TreeNodeType[], parentId: parentIdTypes = null,
 }
 
 function patch(newArr: TreeNodeType[], oldArr: TreeNodeType[], option: CompareDiffOptionType = {}): any {
-  const { indexEffect = true, compareMethod } = option;
+  const { indexEffect = true, compareMethod, key = 'id' } = option;
   const updates: Array<CompareResultType> = [];
   const adds: Array<CompareResultType> = [];
   const moves: Array<CompareResultType> = [];
   const oldDataPathMap = new Map();
   const oldIdMap = new Map();
+  const getUniqueValue = (node: TreeNodeType, key: string): any => get(node, key);
   const getPath = (path: string, id: string | number, index: number): string => {
     const separator = path === 'root' ? '-' : '|';
     return indexEffect ? `${path}${separator}${index}-${id}` : `${path}${separator}${id}`;
   };
   function getOldData(data: TreeNodeType, path: string, index: number): void {
-    const newPath = getPath(path, data.id, index);
+    const newPath = getPath(path, getUniqueValue(data, key), index);
     oldDataPathMap.set(newPath, data);
-    oldIdMap.set(data.id, data);
+    oldIdMap.set(getUniqueValue(data, key), data);
     if (data.children) {
       data.children.forEach((childData: TreeNodeType, childDataIndex: number) => {
         getOldData(childData, newPath, childDataIndex);
@@ -87,10 +88,10 @@ function patch(newArr: TreeNodeType[], oldArr: TreeNodeType[], option: CompareDi
     return isEqual(newNodeExt, oldNodeExt);
   }
   function recursionData(data: TreeNodeType, path: string, index: number): any {
-    const currentKey = getPath(path, data.id, index);
+    const currentKey = getPath(path, getUniqueValue(data, key), index);
     const existingNode = oldDataPathMap.get(currentKey);
-    const existingIdNode = oldIdMap.get(data.id);
-    const diffInfo = { id: data.id, _old: existingNode, _new: data };
+    const existingIdNode = oldIdMap.get(getUniqueValue(data, key));
+    const diffInfo = { id: getUniqueValue(data, key), _old: existingNode, _new: data };
     if (existingNode) {
       // 存在就去比较里面的值
       if (!compareNode(data, existingNode)) {

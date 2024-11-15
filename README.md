@@ -85,8 +85,11 @@ const list = treeToList(treeData);
 
 ### 函数文档
 
-| 方法          | 描述            | 参数                                                                                                                                                                             | 返回值                               |
-|:----------- |:------------- |:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |:--------------------------------- |
-| arrayToTree | 平行数据结构转树形结构   | (list, options) 接收两个参数: <br/>1. 平行数据结构数据 <br/>2. options: ReplaceFiledOptionsType 替换数据中的 id,pid,children 字段为 每个数据 中对应的字段 默认为 { id = 'id', pid = 'pid', children = 'children' } | `Array`                           |
-| treeToList  | 树形结构转换平行数据结构  | (tree, options) 接收两个参数: <br/>1. 树形结构数据 <br/>2. options: ReplaceFiledOptionsType 替换数据中的 id,pid,children 字段为 每个数据 中对应的字段 默认为 { id = 'id', pid = 'pid', children = 'children' }   | `Array`                           |
-| getDiffTree | 获取两个json对象的区别 | patch(newArr: TreeNodeType[], oldArr: TreeNodeType[], option = { indexEffect: true, compareMethod: (newNode, oldNode) })<br/>1. 新树<br/>2.旧树<br/>3.是否受index排序影响, 比较的方法等         | `{updates, deletes, adds, moves}` |
+| 方法          | 描述            | 参数                                                                                                                                                                                                                                                                                                        | 返回值                               |
+|:----------- |:------------- |:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |:--------------------------------- |
+| arrayToTree | 平行数据结构转树形结构   | (list, options) 接收两个参数: <br/>1. 平行数据结构数据 <br/>2. options: ReplaceFiledOptionsType 替换数据中的 id,pid,children 字段为 每个数据 中对应的字段 默认为 { id = 'id', pid = 'pid', children = 'children' }                                                                                                                            | `Array`                           |
+| treeToList  | 树形结构转换平行数据结构  | (tree, options) 接收两个参数: <br/>1. 树形结构数据 <br/>2. options: ReplaceFiledOptionsType 替换数据中的 id,pid,children 字段为 每个数据 中对应的字段 默认为 { id = 'id', pid = 'pid', children = 'children' }                                                                                                                              | `Array`                           |
+| getDiffTree | 获取两个json对象的区别 | getDiffTree(newData: TreeNodeType[], oldData: TreeNodeType[], option: CompareDiffOptionType = {})<br/>1. 新树<br/>2.旧树<br/>3.CompareDiffOptionType {
+<br/>  indexEffect?: boolean; // 是否检测索引变化
+<br/>  key?: string; // 对象对比的唯一键
+<br/>  compareMethod?: (...arg: any) => boolean; // 比较的方法, 默认是对比全部对象 <br/>} | `{updates, deletes, adds, moves}` |

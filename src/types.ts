@@ -20,6 +20,7 @@ export interface RenderHooksFnType {
 
 export interface CompareDiffOptionType {
   indexEffect?: boolean; // 是否检测索引变化
+  key?: string; // 对象对比的唯一键
   compareMethod?: (...arg: any) => boolean; // 比较的方法
 }
 
