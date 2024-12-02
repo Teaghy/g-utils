@@ -50,7 +50,7 @@ export function treeToList(tree: TreeNodeType[], parentId: parentIdTypes = null,
 }
 
 function patch(newArr: TreeNodeType[], oldArr: TreeNodeType[], option: CompareDiffOptionType = {}): any {
-  const { indexEffect = true, compareMethod, key = 'id' } = option;
+  const { indexEffect = true, compareMethod, key = 'id', childrenKey = 'children' } = option;
   const updates: Array<CompareResultType> = [];
   const adds: Array<CompareResultType> = [];
   const moves: Array<CompareResultType> = [];
@@ -65,8 +65,8 @@ function patch(newArr: TreeNodeType[], oldArr: TreeNodeType[], option: CompareDi
     const newPath = getPath(path, getUniqueValue(data, key), index);
     oldDataPathMap.set(newPath, data);
     oldIdMap.set(getUniqueValue(data, key), data);
-    if (data.children) {
-      data.children.forEach((childData: TreeNodeType, childDataIndex: number) => {
+    if (data[childrenKey]) {
+      data[childrenKey].forEach((childData: TreeNodeType, childDataIndex: number) => {
         getOldData(childData, newPath, childDataIndex);
       });
     }
@@ -83,8 +83,8 @@ function patch(newArr: TreeNodeType[], oldArr: TreeNodeType[], option: CompareDi
         console.error(error);
       }
     }
-    const { children, ...newNodeExt } = newNode;
-    const { children: oldChildren, ...oldNodeExt } = oldNode;
+    const { [childrenKey]: children, ...newNodeExt } = newNode;
+    const { [childrenKey]: oldChildren, ...oldNodeExt } = oldNode;
     return isEqual(newNodeExt, oldNodeExt);
   }
   function recursionData(data: TreeNodeType, path: string, index: number): any {
@@ -110,8 +110,8 @@ function patch(newArr: TreeNodeType[], oldArr: TreeNodeType[], option: CompareDi
       adds.push(diffInfo);
     }
 
-    if (data.children) {
-      data.children.forEach((childData: TreeNodeType, childDataIndex: number) => {
+    if (data[childrenKey]) {
+      data[childrenKey].forEach((childData: TreeNodeType, childDataIndex: number) => {
         recursionData(childData, currentKey, childDataIndex);
       });
     }
