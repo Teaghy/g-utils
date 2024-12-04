@@ -101,6 +101,7 @@ function patch(newArr: TreeNodeType[], oldArr: TreeNodeType[], option: CompareDi
     }
     else if (existingIdNode) {
       // 如果旧的不存在, 则去找id相同的
+      diffInfo._old = existingIdNode;
       moves.push(diffInfo);
       if (!compareNode(data, existingIdNode)) {
         updates.push(diffInfo);
