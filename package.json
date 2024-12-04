@@ -10,12 +10,12 @@
   },
   "exports": {
     ".": {
-      "import": "./dist/g-utils.es.js",
-      "require": "./dist/g-utils.umd.js"
+      "import": "./dist/g-utils.js",
+      "require": "./dist/g-utils.umd.cjs"
     }
   },
-  "main": "./dist/g-utils.umd.js",
-  "module": "./dist/g-utils.es.js",
+  "main": "./dist/g-utils.umd.cjs",
+  "module": "./dist/g-utils.js",
   "files": [
     "dist"
   ],

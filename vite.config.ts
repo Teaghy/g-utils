@@ -7,7 +7,6 @@ export default defineConfig({
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
       name: 'g-utils',
-      fileName: format => `g-utils.${format}.js`,
     },
   },
 });
