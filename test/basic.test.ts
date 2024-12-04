@@ -308,14 +308,41 @@ it('diff tree', () => {
   const oldTree = [{
     id: '1',
     value: 'a',
+    nodeDto: {
+      id: '1',
+    },
     children: [
       {
         id: '3',
+        nodeDto: {
+          id: '3',
+        },
         value: 'c',
         children: [
-          { id: '4', value: 'd', children: [] },
-          { id: '5', value: 'e', children: [] },
-          { id: '6', value: 'f', children: [] },
+          {
+            id: '4',
+            value: 'd',
+            nodeDto: {
+              id: '4',
+            },
+            children: [],
+          },
+          {
+            id: '5',
+            value: 'e',
+            nodeDto: {
+              id: '5',
+            },
+            children: [],
+          },
+          {
+            id: '6',
+            value: 'f',
+            nodeDto: {
+              id: '6',
+            },
+            children: [],
+          },
         ],
       },
     ],
@@ -324,26 +351,45 @@ it('diff tree', () => {
   const newTree = [{
     id: '1',
     value: 'a',
+    nodeDto: {
+      id: '1',
+    },
     children: [
       {
         id: '3',
-        value: 'c',
+        value: 'cc',
         xuexi: 'asdasd',
         children: [
-          { id: '5', value: 'e', children: [] },
-          { id: '4', value: 'd', children: [] },
+          {
+            id: '5',
+            value: 'e',
+            children: [],
+          },
+          {
+            id: '4',
+            value: 'd',
+            children: [],
+          },
         ],
       },
-      { id: '6', value: 'f', children: [] },
+      // {
+      //   id: '6',
+      //   value: 'f',
+      //   children: [],
+      // },
     ],
   }];
-  const result = getDiffTree(newTree, oldTree, { indexEffect: false });
+  const result = getDiffTree(newTree, oldTree, { key: 'id', oldKey: 'nodeDto.id', indexEffect: false, compareMethod: (newNode, oldNode) => newNode.value === oldNode.value });
 
   const { updates } = result;
   const updatesId1 = updates.map(item => item.id).join(',');
   expect(updatesId1).toBe('3');
 
   const result2 = getDiffTree(newTree, oldTree, { indexEffect: false, compareMethod: (newNode, oldNode) => newNode.value === oldNode.value });
-  const updatesId = result2.updates.map(item => item.id).join(',');
-  expect(updatesId).toBe('');
+  const deletesId = result2.deletes.map(item => item.id).join(',');
+  expect(deletesId).toBe('6');
+
+  const result3 = getDiffTree(newTree, oldTree, { key: 'id', oldKey: 'nodeDto.id', indexEffect: false, compareMethod: (newNode, oldNode) => newNode.value === oldNode.value });
+  const deletes3Id = result3.deletes.map(item => item.id).join(',');
+  expect(deletes3Id).toBe('6');
 });

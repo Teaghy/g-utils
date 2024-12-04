@@ -50,7 +50,7 @@ export function treeToList(tree: TreeNodeType[], parentId: parentIdTypes = null,
 }
 
 function patch(newArr: TreeNodeType[], oldArr: TreeNodeType[], option: CompareDiffOptionType = {}): any {
-  const { indexEffect = true, compareMethod, key = 'id', childrenKey = 'children' } = option;
+  const { indexEffect = true, compareMethod, key = 'id', oldKey = 'id', childrenKey = 'children' } = option;
   const updates: Array<CompareResultType> = [];
   const adds: Array<CompareResultType> = [];
   const moves: Array<CompareResultType> = [];
@@ -62,9 +62,9 @@ function patch(newArr: TreeNodeType[], oldArr: TreeNodeType[], option: CompareDi
     return indexEffect ? `${path}${separator}${index}-${id}` : `${path}${separator}${id}`;
   };
   function getOldData(data: TreeNodeType, path: string, index: number): void {
-    const newPath = getPath(path, getUniqueValue(data, key), index);
+    const newPath = getPath(path, getUniqueValue(data, oldKey), index);
     oldDataPathMap.set(newPath, data);
-    oldIdMap.set(getUniqueValue(data, key), data);
+    oldIdMap.set(getUniqueValue(data, oldKey), data);
     if (data[childrenKey]) {
       data[childrenKey].forEach((childData: TreeNodeType, childDataIndex: number) => {
         getOldData(childData, newPath, childDataIndex);
@@ -127,7 +127,7 @@ function patch(newArr: TreeNodeType[], oldArr: TreeNodeType[], option: CompareDi
 
 export function getDiffTree(newData: TreeNodeType[], oldData: TreeNodeType[], option: CompareDiffOptionType = {}): any {
   const pathInfo = patch(newData, oldData, option);
-  const { adds } = patch(oldData, newData, option);
+  const { adds } = patch(oldData, newData, { ...option, key: option.oldKey, oldKey: option.key });
   const deletes = adds.map((item: CompareResultType) => ({
     id: item.id,
     _old: item._new,
