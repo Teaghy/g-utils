@@ -42,10 +42,11 @@ export function arrayToTree(list: TreeNodeType, { id = 'id', pid = 'pid', childr
 export function treeToList(tree: TreeNodeType[], parentId: parentIdTypes = null, { children = 'children', pid = 'pid', id = 'id' } = { }): TreeNodeType[] {
   return tree.reduce((arr: TreeNodeType[], curr: TreeNodeType) => {
     const { [children]: childItem, ...params } = curr;
+    const currentNode = { ...params, ...(parentId ? { [pid]: parentId } : {}) };
     if (childItem?.length) {
-      return arr.concat([params], treeToList(childItem, curr[id]));
+      return arr.concat([currentNode], treeToList(childItem, curr[id], { children, pid, id }));
     }
-    return arr.concat([{ ...params, ...(parentId ? { [pid]: parentId } : {}) }]);
+    return arr.concat([currentNode]);
   }, []);
 }
 
